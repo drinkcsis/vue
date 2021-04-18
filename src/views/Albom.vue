@@ -11,6 +11,9 @@
 					:key="photo.id"
 				>
 					<div class="masonry-content">
+						<div class="img-header">
+							<span class="delete-icon" @click.stop="removeImage"></span>
+						</div>
 						<img :src="photo.urls.small" />
 					</div>
 				</div>
@@ -40,7 +43,7 @@ export default {
 		return {
 			showModal: false,
 			photos: [],
-			perPage: 30,
+			perPage: 300,
 			viewerSettings: {
 				initialViewIndex: 0,
 				isOpen: false
@@ -64,6 +67,9 @@ export default {
 		},
 		photoUploaded: function(newPhotoModel) {
 			this.photos.push(newPhotoModel);
+		},
+		removeImage: function() {
+			alert(1);
 		}
 	},
 	created: async function() {

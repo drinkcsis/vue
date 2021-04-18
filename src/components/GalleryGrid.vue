@@ -234,4 +234,34 @@ body {
 .albom {
 	background-color: #f9f9f9;
 }
+.masonry-content {
+	position: relative;
+}
+
+/*.IMAGE HEADER */
+.img-header {
+	position: absolute;
+	background: white;
+	width: 100%;
+	height: 0px;
+	padding: 10px;
+	visibility: hidden;
+	opacity: 0;
+}
+.masonry-item:hover .img-header {
+	transition: visibility 0s, height 0.2s, opacity 0.3s linear;
+	height: 30px;
+	opacity: 1;
+	visibility: visible;
+}
+.delete-icon {
+	display: block;
+	float: right;
+	margin-right: 20px;
+	margin-top: 5px;
+	background: red;
+	width: 20px;
+	height: 20px;
+	border-radius: 15px;
+}
 </style>
