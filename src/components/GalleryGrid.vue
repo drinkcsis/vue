@@ -241,7 +241,7 @@ body {
 /*.IMAGE HEADER */
 .img-header {
 	position: absolute;
-	background: white;
+	background: #999999d1;
 	width: 100%;
 	height: 0px;
 	padding: 10px;

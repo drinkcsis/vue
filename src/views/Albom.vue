@@ -70,8 +70,10 @@ export default {
 			this.photos.push(newPhotoModel);
 		},
 		removeImage: function(event, photo, index) {
-			API.deletePhoto({albomId: this.albomId, photo});
-			this.photos.splice(index,1);
+			if(confirm('Are you sure?')) {
+				API.deletePhoto({albomId: this.albomId, photo});
+				this.photos.splice(index, 1);
+			}
 		}
 	},
 	created: async function() {
