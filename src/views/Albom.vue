@@ -7,12 +7,12 @@
 				<div
 					@click="showImage(index)"
 					class="masonry-item photo"
-					v-for="(photo,index) in photos"
+					v-for="(photo, index) in photos"
 					:key="photo.id"
 				>
 					<div class="masonry-content">
 						<div class="img-header">
-							<span class="delete-icon" @click.stop="removeImage"></span>
+							<span class="delete-icon" @click.stop=" removeImage($event, photo, index)"></span>
 						</div>
 						<img :src="photo.urls.small" />
 					</div>
@@ -47,7 +47,8 @@ export default {
 			viewerSettings: {
 				initialViewIndex: 0,
 				isOpen: false
-			}
+			},
+			albomId: this.$route.params.id
 		};
 	},
 	methods: {
@@ -59,7 +60,7 @@ export default {
 		},
 		fetchPhotos: async function() {
 			const photos = await API.fetchPhotos({
-				albomId: this.$route.params.id,
+				albomId: this.albomId,
 				perPage: this.perPage,
 				page: 1
 			});
@@ -68,8 +69,9 @@ export default {
 		photoUploaded: function(newPhotoModel) {
 			this.photos.push(newPhotoModel);
 		},
-		removeImage: function() {
-			alert(1);
+		removeImage: function(event, photo, index) {
+			API.deletePhoto({albomId: this.albomId, photo});
+			this.photos.splice(index,1);
 		}
 	},
 	created: async function() {

@@ -30,10 +30,10 @@ export default {
     },
 
     uploadPhoto: async ({ albomId, file }) => {
-        const urls = await fileSystemStorage.uploadPhoto(file)
+        const photoInfo = await fileSystemStorage.uploadPhoto(file)
         let photoModel;
-        if (urls)
-            photoModel = PhotoModel(dbStorage.addPhoto({ albomId, urls }));
+        if (photoInfo)
+            photoModel = PhotoModel(dbStorage.addPhoto({ albomId, ...photoInfo }));
         return photoModel;
 
     },
@@ -50,5 +50,10 @@ export default {
             })
         );
         return photoCollection
+    },
+
+    deletePhoto: async ({ photo }) => {
+        await fileSystemStorage.deletePhoto(photo);
+        dbStorage.deletePhoto({ photoId: photo.id });
     }
 }

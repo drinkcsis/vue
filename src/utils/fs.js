@@ -44,8 +44,11 @@ window.webkitRequestFileSystem(window.TEMPORARY, 1024 * 1204, function(fileSyste
 
     }
 
-    window.fsAPI.deleteFile = function(filePath) {
-        window.fs.root.getFile(filePath, { create: false }, function(fileEntry) {
+    window.fsAPI.deleteFile = function (filePath, removeThmb = false) {
+        if (removeThmb) {
+            filePath = filePath.replace(/(\.[\w\d_-]+)$/i, '_w_300$1');
+        }
+        window.fs.root.getFile(filePath, { create: false }, function (fileEntry) {
             fileEntry.remove(function() {
                 console.log('File removed.');
             }, err);

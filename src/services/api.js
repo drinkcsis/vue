@@ -37,5 +37,13 @@ export default {
         }
 
         return photoCollection;
+    },
+
+    deletePhoto: async ({photo}) => {
+        if (!(photo instanceof PhotoModel)) {
+            throw new WrongModelType('PhotoModel', photo);
+        }
+
+        await provider.deletePhoto({ photo })
     }
 }

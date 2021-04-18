@@ -7,20 +7,27 @@ export default {
         return new Promise((resolve, reject) => {
             fsAPI.createDir(title)
                 .then(dir => {
-                    console.log(dir)
                     resolve(dir)
                 }).catch(err => reject(err));
         });
     },
 
     uploadPhoto: async (file) => {
-        const urls = {};
+        const photoInfo = {
+            name: file.name,
+            urls: {}
+        };
         const origin_url = await fsAPI.createFile(ALBOMS_DIR, file)
         if (origin_url) {
-            urls.origin_url = origin_url
+            photoInfo.urls.origin_url = origin_url
             const small = await fsAPI.createThmbFile(ALBOMS_DIR, file)
-            urls.small = small
+            photoInfo.urls.small = small
         }
-        return urls;
+        return photoInfo;
+    },
+
+    deletePhoto: async (photo) => {
+        await fsAPI.deleteFile(`${ALBOMS_DIR}/${photo.name}`);
+        await fsAPI.deleteFile(`${ALBOMS_DIR}/${photo.name}`, true);
     }
 }
