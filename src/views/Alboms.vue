@@ -7,7 +7,7 @@
 					class="masonry-item albom"
 					@click="openAlbom(albom)"
 					v-for="albom in alboms"
-					:key="albom.id"
+					:key="albom.ID"
 				>
 					<div class="masonry-content">
 						<img
@@ -24,13 +24,16 @@
 </template>
 
 <script>
+// @ts-nocheck
 // @ is an alias to /src
 import GalleryGrid from "@/components/GalleryGrid.vue";
 import AlbomCreateForm from "@/components/AlbomCreateFom.vue";
-import API from "../services/api";
+import API2 from "../services/api";
+import resizeGridMixing from '../mixins/resizeGridMixing'
 
 export default {
 	name: "Alboms",
+	mixins:[resizeGridMixing],
 	components: {
 		GalleryGrid,
 		AlbomCreateForm
@@ -43,10 +46,10 @@ export default {
 	},
 	methods: {
 		openAlbom: function(albom) {
-			this.$router.push({ path: "/albom/" + albom.id });
+			this.$router.push({ path: "/albom/" + albom.ID });
 		},
-		fetchAlboms: async function() {
-			const albomCollection = await API.fetchAlboms({
+		fetchAlboms: function() {
+			const albomCollection = API2.fetchAlboms({
 				per_page: this.perPage,
 				page: 1
 			});
@@ -54,9 +57,9 @@ export default {
 		},
 		albomCreated: function(albomModel) {
 			this.alboms.push(albomModel);
-		}
+		},
 	},
-	created: function() {
+	mounted: function() {
 		this.fetchAlboms();
 		var masonryEvents = ["load", "resize"];
 		masonryEvents.forEach(event => {
