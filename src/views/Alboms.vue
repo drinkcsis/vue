@@ -28,7 +28,7 @@
 // @ is an alias to /src
 import GalleryGrid from "@/components/GalleryGrid.vue";
 import AlbomCreateForm from "@/components/AlbomCreateFom.vue";
-import API2 from "../services/api";
+import albomService from "../services/Albom/albomService";
 import resizeGridMixing from '../mixins/resizeGridMixing'
 
 export default {
@@ -49,7 +49,7 @@ export default {
 			this.$router.push({ path: "/albom/" + albom.ID });
 		},
 		fetchAlboms: function() {
-			const albomCollection = API2.fetchAlboms({
+			const albomCollection = albomService.fetchAlboms({
 				per_page: this.perPage,
 				page: 1
 			});

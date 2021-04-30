@@ -12,7 +12,7 @@
 <script>
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
-import API from "../services/api";
+import photoService from "../services/Photo/photoService";
 
 export default {
 	name: "app",
@@ -33,7 +33,7 @@ export default {
 	methods: {
 		upload: async function(files) {
 			files.forEach(async file => {
-				const photoModel = await API.uploadPhoto({
+				const photoModel = await photoService.uploadPhoto({
 					albomId: parseInt(this.$route.params.id),
 					file
 				});

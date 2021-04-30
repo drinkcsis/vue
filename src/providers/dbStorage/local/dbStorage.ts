@@ -1,18 +1,11 @@
 import { I_DBStorage } from "../I_DBStorage";
-import { AlbomModel } from '../../../../models/albomModel';
-import { PhotoModel } from "../../../../models/photoModel";
-const localStorageDB = require('localstoragedb');
+import { AlbomModel } from '../../../models/albomModel';
+import { PhotoModel } from "../../../models/photoModel";
 
-class DBStorage implements I_DBStorage{
+export default class DBStorage implements I_DBStorage{
     private db: any;
-    constructor() {
-        this.db = new localStorageDB('library', localStorage);
-        if (this.db.isNew()) {
-            this.db.createTable('alboms', ['title', 'description', 'preview_photos', 'path']);
-            this.db.createTable('photos', ['albom_id', 'urls']);
-            this.db.commit();
-            console.log('New Database created')
-        }
+    constructor(db: any) {
+        this.db = db;
     }
 
     fetchAlboms({ perPage, page }: { perPage: number, page: number }): object[]
@@ -63,4 +56,3 @@ class DBStorage implements I_DBStorage{
         return photos;
     }
 }
-export default new DBStorage();

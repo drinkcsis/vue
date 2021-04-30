@@ -1,16 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var albomModel_1 = require("../../../../models/albomModel");
-var localStorageDB = require('localstoragedb');
+var albomModel_1 = require("../../../models/albomModel");
 var DBStorage = /** @class */ (function () {
-    function DBStorage() {
-        this.db = new localStorageDB('library', localStorage);
-        if (this.db.isNew()) {
-            this.db.createTable('alboms', ['title', 'description', 'preview_photos', 'path']);
-            this.db.createTable('photos', ['albom_id', 'urls']);
-            this.db.commit();
-            console.log('New Database created');
-        }
+    function DBStorage(db) {
+        this.db = db;
     }
     DBStorage.prototype.fetchAlboms = function (_a) {
         var perPage = _a.perPage, page = _a.page;
@@ -56,4 +49,4 @@ var DBStorage = /** @class */ (function () {
     };
     return DBStorage;
 }());
-exports.default = new DBStorage();
+exports.default = DBStorage;

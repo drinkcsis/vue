@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import API from '../services/api'
+import albomService from '../services/Albom/albomService'
 
 export default {
 	data: function() {
@@ -21,7 +21,7 @@ export default {
 	},
 	methods: {
 		createAlbom: async function() {
-			const albom = await API.createAlbom({
+			const albom = await albomService.createAlbom({
 				title: this.title,
 				description: this.description
 			});

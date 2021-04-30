@@ -46,56 +46,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var albomModel_1 = require("../models/albomModel");
-var photoModel_1 = require("../models/photoModel");
-var dbStorage_1 = __importDefault(require("./providers/dbStorage/local/dbStorage"));
-var fileSystemStorage_1 = __importDefault(require("./providers/fileSystemStorage/local/fileSystemStorage"));
-var APIV2 = /** @class */ (function () {
-    function APIV2() {
+var photoModel_1 = require("../../models/photoModel");
+var LocalDBStorageFactory_1 = require("../../providers/dbStorage/LocalDBStorageFactory");
+var LocalFileSystemStorageFactory_1 = require("../../providers/fileSystemStorage/LocalFileSystemStorageFactory");
+var PhotoService = /** @class */ (function () {
+    function PhotoService() {
+        // if (config.dbStorageType == 'local') {
+        var localDBStorageFactory = new LocalDBStorageFactory_1.LocalDBStorageFactory();
+        this.dbStorage = localDBStorageFactory.create();
+        var localFileSystemStorageFactory = new LocalFileSystemStorageFactory_1.LocalFileSystemStorageFactory();
+        this.fileSystemStorage = localFileSystemStorageFactory.create();
+        // }
     }
-    APIV2.prototype.createAlbom = function (_a) {
-        var title = _a.title, description = _a.description;
-        return __awaiter(this, void 0, void 0, function () {
-            var path, albomModel;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, fileSystemStorage_1.default.createAlbom({ title: title })];
-                    case 1:
-                        path = _b.sent();
-                        albomModel = new albomModel_1.AlbomModel(dbStorage_1.default.createAlbom({ title: title, description: description, path: path.fullPath }));
-                        return [2 /*return*/, albomModel];
-                }
-            });
-        });
-    };
-    APIV2.prototype.fetchAlboms = function (_a) {
-        var perPage = _a.perPage, page = _a.page;
-        var alboms = dbStorage_1.default.fetchAlboms({ perPage: perPage, page: page });
-        return alboms.map(function (albom) {
-            return new albomModel_1.AlbomModel({
-                ID: albom.ID,
-                title: albom.title,
-                description: albom.description,
-                preview_photo: albom.preview_photo,
-                path: albom.path
-            });
-        });
-    };
-    APIV2.prototype.uploadPhoto = function (_a) {
+    PhotoService.prototype.uploadPhoto = function (_a) {
         var albomId = _a.albomId, file = _a.file;
         return __awaiter(this, void 0, void 0, function () {
             var photoInfo, photoModel;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, fileSystemStorage_1.default.uploadPhoto(file)];
+                    case 0: return [4 /*yield*/, this.fileSystemStorage.uploadPhoto(file)];
                     case 1:
                         photoInfo = _b.sent();
                         if (photoInfo)
-                            photoModel = new photoModel_1.PhotoModel(dbStorage_1.default.addPhoto({
+                            photoModel = new photoModel_1.PhotoModel(this.dbStorage.addPhoto({
                                 albomId: albomId,
                                 urls: photoInfo.urls,
                                 name: photoInfo.name,
@@ -105,33 +79,33 @@ var APIV2 = /** @class */ (function () {
             });
         });
     };
-    APIV2.prototype.fetchPhotos = function (_a) {
+    PhotoService.prototype.fetchPhotos = function (_a) {
         var albomId = _a.albomId, perPage = _a.perPage, page = _a.page;
         return __awaiter(this, void 0, void 0, function () {
             var photos;
             return __generator(this, function (_b) {
-                photos = dbStorage_1.default.fetchPhotos({ albomId: albomId, perPage: perPage, page: page });
+                photos = this.dbStorage.fetchPhotos({ albomId: albomId, perPage: perPage, page: page });
                 return [2 /*return*/, photos.map(function (photo) {
                         return new photoModel_1.PhotoModel(__assign({ id: photo.ID }, photo));
                     })];
             });
         });
     };
-    APIV2.prototype.deletePhoto = function (_a) {
+    PhotoService.prototype.deletePhoto = function (_a) {
         var photo = _a.photo;
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, fileSystemStorage_1.default.deletePhoto(photo)];
+                    case 0: return [4 /*yield*/, this.fileSystemStorage.deletePhoto(photo)];
                     case 1:
                         _b.sent();
-                        dbStorage_1.default.deletePhoto(photo);
+                        this.dbStorage.deletePhoto(photo);
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return APIV2;
+    return PhotoService;
 }());
-var APIV2Instance = new APIV2();
-exports.default = APIV2Instance;
+var photoServiceInstance = new PhotoService();
+exports.default = photoServiceInstance;

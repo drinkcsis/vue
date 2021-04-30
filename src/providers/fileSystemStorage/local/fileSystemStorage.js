@@ -96,4 +96,4 @@ var FileSystemStorage = /** @class */ (function () {
     };
     return FileSystemStorage;
 }());
-exports.default = new FileSystemStorage('alboms');
+exports.default = FileSystemStorage;

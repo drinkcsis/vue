@@ -1,7 +1,7 @@
 import { I_FileSystemStorage } from "../I_FileSystemStorage";
-import { PhotoModel } from "../../../../models/photoModel";
+import { PhotoModel } from "../../../models/photoModel";
 
-class FileSystemStorage implements I_FileSystemStorage {
+export default class FileSystemStorage implements I_FileSystemStorage {
     constructor(private albomsDir: string) { }
     createAlbom({ title }: { title: string }): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -34,5 +34,3 @@ class FileSystemStorage implements I_FileSystemStorage {
         await window.fsAPI.deleteFile(`${this.albomsDir}/${photo.name}`, true);
      }
 }
-
-export default new FileSystemStorage('alboms');

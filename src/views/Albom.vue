@@ -29,7 +29,7 @@ import GalleryGrid from "@/components/GalleryGrid.vue";
 import ImageUploader from "@/components/ImageUploader.vue";
 import Viewer from "@/components/Viewer.vue";
 import Modal from "@/components/Modal";
-import API from "../services/api";
+import photoService from "../services/Photo/photoService";
 
 export default {
 	name: "Alboms",
@@ -59,7 +59,7 @@ export default {
 			};
 		},
 		fetchPhotos: async function() {
-			const photos = await API.fetchPhotos({
+			const photos = await photoService.fetchPhotos({
 				albomId: this.albomId,
 				perPage: this.perPage,
 				page: 1
@@ -71,7 +71,7 @@ export default {
 		},
 		removeImage: function(event, photo, index) {
 			if(confirm('Are you sure?')) {
-				API.deletePhoto({albomId: this.albomId, photo});
+				photoService.deletePhoto({albomId: this.albomId, photo});
 				this.photos.splice(index, 1);
 			}
 		}
